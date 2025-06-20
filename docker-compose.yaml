@@ -33,12 +33,25 @@ services:
     volumes: 
       - ./volumes/db:/var/lib/postgresql/data
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    depends_on:
+      - hmdm
+    restart: always
+    ports:
+      - "80:80"
+      # - "8443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/certs:/etc/nginx/certs
+
   hmdm:
     image: headwindmdm/hmdm:0.1.5
     ports:
       # Uncomment this port forwarding if you want to use plain HTTP instead of HTTPS
       - 8080:8080
-      - 443:8443
+      # - 443:8443
       - 31000:31000
     volumes:
       - ./volumes/work:/usr/local/tomcat/work
