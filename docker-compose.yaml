@@ -19,7 +19,7 @@ services:
     volumes:
       - ./volumes/letsencrypt:/etc/letsencrypt
     ports: 
-      - 80:80
+      - 8081:80
     entrypoint: "certbot certonly --non-interactive --agree-tos -m ${ADMIN_EMAIL} --standalone -d ${BASE_DOMAIN}"
 
   postgresql:
@@ -38,7 +38,7 @@ services:
     ports:
       # Uncomment this port forwarding if you want to use plain HTTP instead of HTTPS
       - 8080:8080
-      - 443:8443
+      - 8443:8443
       - 31000:31000
     volumes:
       - ./volumes/work:/usr/local/tomcat/work
