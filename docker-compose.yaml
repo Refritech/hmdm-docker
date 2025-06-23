@@ -21,6 +21,8 @@ services:
     ports: 
       - 8081:80
     entrypoint: "certbot certonly --non-interactive --agree-tos -m ${ADMIN_EMAIL} --standalone -d ${BASE_DOMAIN}"
+    networks:
+        - hmdm-network
 
   postgresql:
     image: postgres:12-alpine
@@ -32,6 +34,8 @@ services:
       POSTGRES_DB: ${SQL_BASE}
     volumes: 
       - ./volumes/db:/var/lib/postgresql/data
+    networks:
+      - hmdm-network
 
   hmdm:
     image: headwindmdm/hmdm:0.1.5
@@ -59,4 +63,10 @@ services:
       HMDM_URL: ${HMDM_URL}
       CLIENT_VERSION: ${CLIENT_VERSION}
       FORCE_RECONFIGURE: ${FORCE_RECONFIGURE}
+    networks:
+      - hmdm-network
+
+networks:
+  hmdm-network:
+    driver: bridge
 
